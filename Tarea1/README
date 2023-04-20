@@ -1,0 +1,4 @@
+Para la validacion de cantidad de agregar pedido y agregar donacion, los parametros validos son (numero)+(texto) que la idea es que se utilicen por ejemplo "10L" (10 litros)
+Todo numero telefonico que se introdusca en los agregar tienen que iniciar con el "+569" sino no seran validos
+
+para agregar mas de una foto, en algunos navegadores estos tienen que estar en la misma carpeta para seleccionar a todos a la vez.

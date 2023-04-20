@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../style/style-agregar-donacion.css">
+    <title>agregar-donacion</title>
+</head>
+<body>
+    <main>
+        <div id="divFormu">
+            <p id="titulo">Agregar donacion</p>
+            <form class="formulario" id="for-agre">
+                <p>Seleccione region *</p>
+                <select id="regiones" onchange="createComunaSelect()"></select>
+                <p>Seleccione Comuna *</p>
+                <select id="comunas" ></select>
+                <p>Calle y numero *</p>
+                <input id="direction" name="calle-numero" type="text" placeholder="ejm: Beauchef 851" onchange="validationDirection()" >
+                <p>tipo de donacion *</p>
+                <select id="tipe-donation" >
+                    <option value="0">Seleccione tipo</option>
+                    <option value="fruta">Frutas</option>
+                    <option value="verduras">Verduras</option>
+                    <option value="otros">Otros</option>
+                </select>
+                <p>Cantidad de donacion *</p>
+                <input id="cantidad" name="cantidad" type="text" maxlength="10" onchange="validateCantidad()" >
+                <p>Fecha de disponibilida *</p>
+                <input id="fecha" name="fecha" type="text" placeholder="AAAA-MM-DD" onchange="validaFecha()" >
+                <p>Descripcion de donacion</p>
+                <input id="descripcion" name="descripcion" type="text" >
+                <p>Condicion de retiro</p>
+                <input id="condiciones" name="condiciones" type="text" maxlength="80" >
+                <p>Ingrese fotos *</p>
+                <input id ="fotos" name="fotos[]" type="file" accept="image/*" onchange="validationFiles()"  multiple>
+                <p>Ingrese Nombre *</p>
+                <input type="text" id = "name_donante" name="name_donante" >
+                <p>Email *</p>
+                <input type="email" id = "email_donante" name="email_donante"  onchange="validaEmail()">
+                <p>Numero de telefono *</p>
+                <input type="text" id ="number-phone" name = "number-phone" placeholder="+569********" onchange="validateNumberPhone()">
+                <p></p>
+            </form>
+            <button id="button-get-into" onclick="validation()">Agregar Donacion</button>
+        </div>
+        <div><a class="button" href="inicio.html">inicio</a> </div>
+        <div id="ventana-emergente">
+            <p>¿Confirma que desea agregar esta donación?</p>
+            <button id="aceptar" onclick="aceptated(1)">Si, confirmo</button>
+            <button id="cancelar" onclick="aceptated(0)">No, quiero volver al formulario</button>
+        </div>
+    </main>
+    <script src="../JavaScrips/agregar-donacion.js"></script>
+    
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>JavaScript Loan Calculator</title>
+<style>
+/* This is a CSS style sheet: it adds style to the program output */
+.result { font-weight: bold; }  /* For elements with class="result" */
+#payment { text-decoration: underline; } /* For element with id="payment" */
+</style>
+<script src="credito.js"></script>
+</head>
+<body>
+<!-- 
+  This is an HTML form that allows the user to enter data and allows
+  JavaScript to display the results it computes back to the user. The
+  form elements are embedded in a table to improve their appearance.
+  The form itself is given the name "loandata", and the fields within
+  the form are given names such as "interest" and "years". These
+  field names are used in the JavaScript code that follows the form.
+  Note that some of the form elements define "onchange" or "onclick"
+  event handlers. These specify strings of JavaScript code to be
+  executed when the user enters data or clicks on a button.
+-->
+<form name="loandata">
+  <table>
+    <tr><td colspan="2"><b>Enter Loan Information:</b></td></tr>
+    <tr>
+      <td>1) Amount of the loan (any currency):</td>
+      <td><input type="text" name="principal" onchange="calculate()"></td>
+    </tr>
+    <tr>
+      <td>2) Annual percentage rate of interest:</td>
+      <td><input type="text" name="interest" onchange="calculate();"></td>
+    </tr>
+    <tr>
+      <td>3) Repayment period in years:</td>
+      <td><input type="text" name="years" onchange="calculate();"></td>
+    </tr>
+    <tr><td></td>
+      <td><input type="button" value="Compute" onclick="calculate();"></td>
+    </tr>
+    <tr><td colspan="2"><b>Payment Information:</b></td></tr>
+    <tr>
+      <td>4) Your monthly payment:</td>
+      <td>$<span class="result" id="payment"></span></td>
+    </tr>
+    <tr>
+      <td>5) Your total payment:</td>
+      <td>$<span class="result" id="total"></span></td>
+    </tr>
+    <tr>
+      <td>6) Your total interest payments:</td>
+      <td>$<span class="result" id="totalinterest"></span></td>
+    </tr>
+  </table>
+</form>
+
+</body>
+</html>
+
