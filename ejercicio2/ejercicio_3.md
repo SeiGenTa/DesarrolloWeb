@@ -1,6 +1,6 @@
 # Ejercicio 3
 
-**Nombre**: [tu nombre va aqui]
+**Nombre**: Alvaro Enrique Martinez Gonzalez
 
 ---
 
@@ -67,6 +67,15 @@ El objetivo de esta pregunta es que usted rellene los bloques de la template `ru
 {% block content %}
     <h1>RUTA!</h1>
     <!-- PROGRAME AQUI! -->
+    {%if mul %}
+      {%for i in range(mul)%}
+          <img id="{{ url_for('static', filename='svg/icon.svg')}">
+      {%endfor%}
+    {%endif}
+    {%else%}
+      <img id="{{ url_for('static', filename='svg/icon.svg')}">
+    {%endelse%}
+
 {% endblock %}
 
 {% block javascript %}
@@ -132,13 +141,25 @@ def malo():
   return "Respondiste mal :o"
 
 def validar_input(input):
-  # VALIDE SU INPUT AQUI
-  pass
+  if len(input) < 5 or len(input) > 30:
+    return False
+  if not ("abracadabra" in input):
+    return False
+  for i in input:
+    try:
+      int(i)
+      return True
+    except:
+      pass
+  return false
 
 @app.route('/pregunta', method=('GET', 'POST'))
 def pregunta():
-  # COMPLETE AQUI LA LÓGICA DE SU RUTA
-  return render_template('pregunta.html')
+  if request.method == "POST":
+    cont_text = request.form.get("pregunta")
+    if validar_input(cont_text): return render_template('exito')
+    else: return render_template('malo')
+  elif request.method == "GET": return render_template('pregunta.html')
 ```
 
 ## Pregunta 3
@@ -146,4 +167,4 @@ En auxiliar hemos hablado sobre cómo el input del usuario puede ser malicioso. 
 
 A pesar de ser una de las vulnerabilidades más recurrentes en aplicaciones web, no es la única donde el input del usuario juega una mala pasada. Otro ejemplo es el llamado **Server Side Template Injection** (SSTI). Investigue y explique brevemente en qué consiste esta vulnerabilidad.
 
-**Respuesta**:
+**Respuesta**: Este tipo de vulnerabilidad ocurre en aplicaciones web que utilizan plantillas desde el lado del servidor para contruir paginas web dinamicas. Consiste en la manipulacion de variables en una de las platillas, lo que puede provocar que se ejecuten comandos de manera malisioso. Por ejemplo, supongamos que tengamos un form, suponiendo que este no posea una validacion, podriamos colocar un comando {{7*"7"}} lo que haria que cierta parte de la pagina no respondiera como deberia. En particular estas ejemplo es con aplicaciones que utilizan jinja para modificar los html
