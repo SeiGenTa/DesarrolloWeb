@@ -1,0 +1,49 @@
+{%extends 'forms/base.html'%}
+{%block tittle%}agregar donacion{%endblock%}
+{%block modal%}
+<div id="ventana-emergente">
+    <p>¿Confirma que desea agregar esta donación?</p>
+    <button type="button" id="aceptar" onclick="aceptated(1)">Si, confirmo</button>
+    <button type="button" id="cancelar" onclick="aceptated(0)">No, quiero volver al formulario</button>
+</div>
+{%endblock%}
+{%block forms%}
+<p id="titulo">Agregar Donacion</p>
+<form class="formulario" id="formulario">
+    <p >Seleccione region *</p>
+    <select id="regiones"></select>
+    <p>Seleccione Comuna *</p>
+    <select id="comunas" ></select>
+    <p>Calle y numero *</p>
+    <input id="direction" name="calle-numero" type="text" placeholder="ejm: Beauchef 851"" >
+    <p>tipo de donacion *</p>
+    <select id="tipe-donation" >
+        <option value="0">Seleccione tipo</option>
+        <option value="Fruta">Frutas</option>
+        <option value="Verduras">Verduras</option>
+        <option value="Otros">Otros</option>
+    </select>
+    <p>Cantidad de donacion *</p>
+    <input id="cantidad" name="cantidad" type="text" maxlength="10" >
+    <p>Fecha de disponibilida *</p>
+    <input id="fecha" name="fecha" type="text" placeholder="AAAA-MM-DD" >
+    <p>Descripcion de donacion</p>
+    <input id="descripcion" name="descripcion" type="text" >
+    <p>Condicion de retiro</p>
+    <input id="condiciones" name="condiciones" type="text" maxlength="80" >
+    <p>Ingrese fotos *</p>
+    <input id="fotos" name="fotos[]" type="file" accept="image/*" multiple>
+    <p>Ingrese Nombre *</p>
+    <input type="text" id="name_donante" name="name_donante" >
+    <p>Email *</p>
+    <input type="email" id="email_donante" name="email_donante" >
+    <p>Numero de telefono *</p>
+    <input type="text" id="number-phone" name="number-phone" placeholder="+569********" >
+    <button type="submit" id="buttonValidate">Agregar Donacion</button>
+</form>
+
+{%endblock%}
+{% block javascript %}
+    <script src="{{ url_for('static', filename='JavaScripts/agregar-donacion.js') }}"></script>
+{%endblock%}
+z
