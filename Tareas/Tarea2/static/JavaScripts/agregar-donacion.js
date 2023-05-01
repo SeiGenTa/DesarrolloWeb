@@ -76,11 +76,11 @@ const number_phone = document.getElementById("number-phone");
 const idCantida = document.getElementById('cantidad');
 const tipeDonation = document.getElementById('tipe-donation');
 const nameDonate = document.getElementById('name_donante');
-const ventanaEmergente = document.getElementById('ventana-emergente ');
+const ventanaEmergente = document.getElementById('ventana-emergente');
 const description = document.getElementById('descripcion')
 const condicionDeRetiro = document.getElementById('condiciones')
 const button = document.getElementById('buttonValidate')
-const form = document.getElementById('form')
+const form = document.getElementById('formulario')
 
 
 let predReg = '<option value="0">Seleccione región</option>';
@@ -370,7 +370,12 @@ button.addEventListener('click',function(evento) {
 
 
 	if (validate){
-		console.log("se confirmo")
-		ventanaEmergente.style.display = "block"
+		console.log("se confirmo");
+		ventanaEmergente.style.display = "block";
 	}
 })
+
+function aceptated(n){
+	if (n == 1) form.submit();
+	else ventanaEmergente.style.display = "None";
+}

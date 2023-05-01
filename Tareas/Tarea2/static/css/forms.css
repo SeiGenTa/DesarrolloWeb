@@ -71,8 +71,9 @@ body{
 }
 
 /*Creacion de ventana emergente */
+/* ESTA ES LA CONFIGURACION INICIAL CON DISPLAY NONE*/
 #ventana-emergente {
-    display: block;
+    display: None;
     position: fixed;
     z-index: 100;
     top: 0;
