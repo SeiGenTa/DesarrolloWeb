@@ -10,15 +10,15 @@
 
 {%block forms%}
 <p id="titulo">Agregar Donacion</p>
-<form class="formulario" id="formulario">
+<form class="formulario" action="/agregar_donacion" id="formulario" method="post" enctype="multipart/form-data">
     <p >Seleccione region *</p>
-    <select id="regiones"></select>
+    <select id="regiones" name="region"></select>
     <p>Seleccione Comuna *</p>
-    <select id="comunas" ></select>
+    <select id="comunas" name="comunas"></select>
     <p>Calle y numero *</p>
     <input id="direction" name="calle-numero" type="text" placeholder="ejm: Beauchef 851">
     <p>tipo de donacion *</p>
-    <select id="tipe-donation" >
+    <select id="tipe-donation" name="tipoDonacion">
         <option value="0">Seleccione tipo</option>
         <option value="Fruta">Frutas</option>
         <option value="Verduras">Verduras</option>
@@ -33,7 +33,7 @@
     <p>Condicion de retiro</p>
     <input id="condiciones" name="condiciones" type="text" maxlength="80" >
     <p>Ingrese fotos *</p>
-    <input id="fotos" name="fotos[]" type="file" accept="image/*" multiple>
+    <input id="fotos" name="fotos" type="file" accept="image/*" multiple>
     <p>Ingrese Nombre *</p>
     <input type="text" id="name_donante" name="name_donante" >
     <p>Email *</p>

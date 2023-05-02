@@ -171,7 +171,7 @@ tipeDonation.addEventListener('input', (event) => {validateTypeDonation()});
 
 function validateCantidad(){
 	const val = idCantida;
-	const isValidate = /^[0-9]+[a-zA-Z]+$/;;
+	const isValidate = /^[0-9]+[a-zA-Z]+$/;
 	if (!isValidate.test(val.value)){
 		alert("inserte cantidad valida (por ejemplo 10L)");
 		val.value = '';
@@ -317,8 +317,12 @@ function validateLenght(direc){
 		direc.value = ''
 		direc.style.border = "2px solid red";
 		alert('Demasiado largo')
+		return false
 	}
-	else direc.style.border = "2px solid rgba(0,0,0,0.2)";
+	else {
+		direc.style.border = "2px solid rgba(0,0,0,0.2)";
+		return true
+	}
 }
 description.addEventListener("input",(event) => validateLenght(description))
 condicionDeRetiro.addEventListener("input",(event) => validateLenght(condicionDeRetiro))
@@ -365,6 +369,14 @@ button.addEventListener('click',function(evento) {
 	}
 	if (!validate_number){
 		validateNumberCont();
+		validate=false;
+	}
+	if (!validateLenght(description)){
+		alert("Descripcion no valida");
+		validate=false;
+	}
+	if (!validateLenght(condicionDeRetiro)){
+		alert("Condicion no valida");
 		validate=false;
 	}
 
