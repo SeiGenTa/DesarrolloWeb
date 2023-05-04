@@ -62,28 +62,30 @@ inf_reg_com = [
 	{
 		"NombreRegion": "Región Metropolitana de Santiago",
 		"comunas": ["Cerrillos", "Cerro Navia", "Conchalí", "El Bosque", "Estación Central", "Huechuraba", "Independencia", "La Cisterna", "La Florida", "La Granja", "La Pintana", "La Reina", "Las Condes", "Lo Barnechea", "Lo Espejo", "Lo Prado", "Macul", "Maipú", "Ñuñoa", "Pedro Aguirre Cerda", "Peñalolén", "Providencia", "Pudahuel", "Quilicura", "Quinta Normal", "Recoleta", "Renca", "Santiago", "San Joaquín", "San Miguel", "San Ramón", "Vitacura", "Puente Alto", "Pirque", "San José de Maipo", "Colina", "Lampa", "Tiltil", "San Bernardo", "Buin", "Calera de Tango", "Paine", "Melipilla", "Alhué", "Curacaví", "María Pinto", "San Pedro", "Talagante", "El Monte", "Isla de Maipo", "Padre Hurtado", "Peñaflor"]
-	 }
+}
 ];
 
-class Donation(object):
-    def __init__(self, region, commune, addres, type_donation, amount, date, photos, name, email, phone_number, description = None, condition = None):
-        self.region = (inf_reg_com[region])['nombreRegion']
-        self.commune = (inf_reg_com[region])['comunas'][commune]
-        self.addres = addres
-        self.typeD = type_donation
-        self.amount_donation = amount
-        self.date = date
-        self.photos = photos
-        self.name = name
-        self.email = email
-        self.phone_number = phone_number
-        self.description = description
-        self.condition = condition
+class Donation():
+	def __init__(self, region, comuna, addres, type_donation, amount, date, photos, name, email, phone_number, description = None, condition = None):
+		self.region = (inf_reg_com[int(region) - 1])['NombreRegion']
+		self.comuna = (inf_reg_com[int(region) - 1])['comunas'][int(comuna) - 1]
+		self.addres = addres
+		self.typeD = type_donation
+		self.amount_donation = amount
+		self.date = date
+		self.photos = photos
+		self.name = name
+		self.email = email
+		self.phone_number = phone_number
+		self.description = description
+		self.condition = condition
 
-    #Esta funcion hara toda la validacion de la donacion
-    #def isValidDonation(self):
+	def __str__(self):
+		return f"<class donation: region:{self.region}, commune:{self.comuna}, addres: {self.addres}, type Donation: {self.typeD}, amount of donation: {self.amount_donation}, date: {self.date}, photos: {self.photos}, name: {self.name}, email: {self.email}, phone number: {self.phone_number}, description: {self.description}, condition: {self.condition}"
+
         
 #Constructors
 def donation(request):
-    donate = Donation(request.form.get("region"), request.form.get("comuna"), request.form.get("calle-numero"), request.form.get("tipe-donation"), request.form.get("cantidad"), request.form.get("fecha"), request.files.getlist("fotos"), request.form.get("name_donate"), request.form.get("email_donate"), request.form.get("number-donate"),description=request.form.get("description"),condition=request.form.get("condiciones"))
+    donate = Donation(request.form.get("region"), request.form.get("comunas"), request.form.get("calle-numero"), request.form.get("tipoDonacion"), request.form.get("cantidad"), request.form.get("fecha"), request.files.getlist("fotos"), request.form.get("name_donante"), request.form.get("email_donante"), request.form.get("number-phone"),description=request.form.get("descripcion"),condition=request.form.get("condiciones"))
     return donate
+

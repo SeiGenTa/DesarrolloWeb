@@ -65,6 +65,7 @@ inf_reg_com = [
 	 }
 ];
 from flask import request
+from datetime import datetime
 import re
 import os
 
@@ -82,88 +83,106 @@ def donationValidate(Myrequest):
         return [False,"photos isn't existed"] #no viene ningun archivo
     AmountPhotos = len(Myrequest.files.getlist("fotos"))
     if (AmountPhotos< AMOUNT_PHOTOS_MIN) or (AmountPhotos > AMOUNT_PHOTOS_MAX):
-        return [False,"amount photos isn't valided"] #El largo no corresponde
+        return [False,"amount photos isn't valid"] #El largo no corresponde
     
     photos = Myrequest.files.getlist('fotos')
 
     #Comprobamos que todas las complan nuestros requisitos
     for photo in photos:
         if photo.content_type not in ALLOWED_MIMETYPES:
-            return [False,"type of content isn't valided"] #Revisamos que realmente sea una foto
+            return [False,"type of content isn't valid"] #Revisamos que realmente sea una foto
         if photo.content_length > SYZE_MAX: #Comprobamos que no supere cierto tamaño
-            return [False,"syze of photo isn't valided"]
+            return [False,"syze of photo isn't valid"]
         extension = os.path.splitext(photo.filename)[1].lower()
         if extension not in ALLOWED_EXTENSIONS:
-            return [False,"extension of photo isn't valided"]#Nos aseguramos que sean de los tipos que especificamos 
+            return [False,"extension of photo isn't valid"]#Nos aseguramos que sean de los tipos que especificamos 
         if (photo.filename.count('.') != 1):
-            return [False,"name of photo isn't valided"]#Con limitar la cantidad de puntos podemos evitar (en parte) que nos ataquen al servidor con SSTI
+            return [False,"name of photo isn't valid"]#Con limitar la cantidad de puntos podemos evitar (en parte) que nos ataquen al servidor con SSTI
 
     #Validacion de region
     reqReg = Myrequest.form.get('region')
     #validamos que sea de la forma que queremos
     try: reqReg = int(reqReg)
     except: 
-        return [False,"region isn't valided"]
+        return [False,"region isn't valid",reqReg]
     if not (0 < reqReg < len(inf_reg_com)): #El 0 es el "select"
-        return [False,"region isn't valided"]
+        return [False,"region isn't valid",reqReg]
 
     #Validacion de comuna
     reqCom = Myrequest.form.get('comunas')
     try: reqCom = int(reqCom)
     except:
-        return [False,"comune isn't valided"]
+        return [False,"comune isn't valid",reqCom]
     if not  0 < reqCom < len(inf_reg_com[reqReg-1]['comunas']):
-        return [False,"comune isn't valided"]
+        return [False,"comune isn't valid",reqCom]
 
     #Validacion de direcion
     reqAddre = Myrequest.form.get('calle-numero')
+    if reqAddre == None:
+        return [False,"addres isn't valid",reqAddre]
     if len(reqAddre) > 80:
-        return [False,"addres isn't valided"]
+        return [False,"addres isn't valid",reqAddre]
         
     #Validacion de tipo de donacion
-    if Myrequest.form.get('tipoDonacion') not in TYPE_DONATION_VALIDE:
-        return [False,"type of donation isn't valided"]
+    reqType = Myrequest.form.get('tipoDonacion')
+    if reqType == None:
+        return [False,"type of donation isn't valid",reqType]
+    if reqType not in TYPE_DONATION_VALIDE:
+        return [False,"type of donation isn't valid",reqType]
 
     #Validacion de cantidad
-    if not re.match("^[0-9]+[a-zA-Z]+$",Myrequest.form.get('cantidad')):
-        return [False,"amount isn't valided"]
+    amount = Myrequest.form.get('cantidad')
+    if amount == None:
+        return [False,"amount isn't valid",amount]
+    if not re.match("^[0-9]+[a-zA-Z]{0,3}$",amount):
+        return [False,"amount isn't valid",amount]
+    if len(amount) > 80:
+        return [False,"amount isn't valid",amount]
 
     #Validacion de fecha
     reqFech = Myrequest.form.get('fecha')
+    if reqFech == None:
+        return [False,"date isn't valid",reqFech]
     if not re.match("^(\d{4})-(\d{2})-(\d{2})$", reqFech):
-        return [False,"date isn't valided"]
+        return [False,"date isn't valid",reqFech]
+
+    try:
+        fecha = datetime.strptime(reqFech, '%Y-%m-%d')
+    except:
+        return [False,"date isn't valid",reqFech]
 
     #validacion de description:
     reqDes = Myrequest.form.get('descripcion')
     if reqDes != None:
         if len(reqDes) > 80:
-            return [False,"description isn't valided"]
+            return [False,"description isn't valid"]
 
     #validacion de condicion:
     reqCond = Myrequest.form.get('condiciones')
     if reqCond != None:
         if len(reqCond) > 80:
-            return [False,"condition isn't valided"]
+            return [False,"condition isn't valid"]
 
     #Validacion de nombre
-    if Myrequest.form.get('name_donante') == None: 
-        return [False,"name isn't valided"]
-    if len(Myrequest.form.get('name_donante')) > 80:
-        return [False,"name isn't valided"]
+    reqName = Myrequest.form.get('name_donante')
+    if reqName == None: 
+        return [False,"name isn't valid"]
+    if len(reqName) > 80:
+        return [False,"name isn't valid"]
 
     #Validacion de email
     reqEmail = Myrequest.form.get('email_donante')
-    if not re.match("^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$", reqEmail):
-        return [False,"email isn't valided"]
+    if not re.match("^[a-zA-Z0-9_.ñ-]+@[a-zA-Z0-9]+\.[a-zA-Z0-9.ñ]+$",reqEmail):
+        return [False,"email isn't valid, email have a ."]
     if len(reqEmail) > 80:
-        return [False,"email isn't valided"]
+        return [False,"email isn't valid"]
 
     #Validacion de numero de telefono
     reqNum = Myrequest.form.get('number-phone')
     if not re.match("^\+569\d+$", reqNum):
         print(18)
-        return [False,"numbert-phone isn't valided"]
+        return [False,"phone numbert isn't valid"]
     if len(reqNum) > 15:
-        return [False,"numbert-phone isn't valided"]
+        return [False,"phone numbert isn't valid"]
 
-    return True
+    return [True,"complete"]

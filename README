@@ -1,0 +1,4 @@
+###COMANDOS UTILES###
+
+#Esto es para iniciar el Env en Pycharm
+source ../Env/Web-env/bin/activate

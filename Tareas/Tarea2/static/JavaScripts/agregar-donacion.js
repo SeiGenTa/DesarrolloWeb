@@ -171,7 +171,7 @@ tipeDonation.addEventListener('input', (event) => {validateTypeDonation()});
 
 function validateCantidad(){
 	const val = idCantida;
-	const isValidate = /^[0-9]+[a-zA-Z]+$/;
+	const isValidate = /^[0-9]+[a-zA-Z]{0,3}$/;
 	if (!isValidate.test(val.value)){
 		alert("inserte cantidad valida (por ejemplo 10L)");
 		val.value = '';

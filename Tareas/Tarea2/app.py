@@ -1,15 +1,22 @@
 from flask import Flask, render_template, request,redirect, url_for
-from utils.clases import Donation
+from utils.clases import Donation,donation
 from utils.validations import donationValidate
 
 app = Flask(__name__)
 UPLOAD_FOLDER = 'static/svg'
 app.config['MAX_CONTENT_LENGTH'] = 13 * 1024 * 1024
-
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/')
 def index():
     return render_template("/menus/initio.html")
+
+@app.route('/test', methods=["GET","POST"])
+def testing():
+    if request.method == "POST":
+        return donationValidate(request)
+    elif request.method == "GET":
+        return "error"
 
 
 @app.route('/agregar_pedido', methods=["GET", "POST"])
@@ -24,10 +31,18 @@ def form_add_order():
 @app.route('/agregar_donacion', methods=["GET", "POST"])
 def form_add_don():
     if request.method == "POST":
-        #esta funcion valida si el request es correcto, si no es asi retorna un False con el error
+        print(request.files)
+        '''
+        this function validates if the request is correct
+        #? return a list, example [true,"complete"] for case in than request is correct
+        #!but for incorrect request, return [false,"{reason for error}","{part of request with error}"]
+        '''
         valid = donationValidate(request) 
-        if valid != True:
+        print(valid)
+        if valid != [True,"complete"]:
             return render_template("/forms/forms_donation.html",error = valid[1])
+        myDonation = donation(request)
+        print(myDonation)
         return redirect(url_for("index"))
     if request.method == "GET":
         return render_template("/forms/forms_donation.html")
