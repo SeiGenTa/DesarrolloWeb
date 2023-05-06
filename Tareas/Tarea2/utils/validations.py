@@ -66,8 +66,17 @@ inf_reg_com = [
 ];
 from flask import request
 from datetime import datetime
+from database.db import getCommune, getRegion
+
 import re
 import os
+
+HOST = 'localHost'
+USER = 'root'
+PASSWORD = 'PinoRojo'
+
+dataRegion = getRegion(USER,PASSWORD,HOST)
+
 
 def donationValidate(Myrequest):
     ALLOWED_EXTENSIONS = {".png", ".jpg", ".jpeg", ".gif"}
@@ -105,15 +114,28 @@ def donationValidate(Myrequest):
     try: reqReg = int(reqReg)
     except: 
         return [False,"region isn't valid",reqReg]
-    if not (0 < reqReg < len(inf_reg_com)): #El 0 es el "select"
+    
+    valdita = False
+    for i in dataRegion:
+        if i[0] == reqReg:
+            valdita = True
+    if not valdita :
         return [False,"region isn't valid",reqReg]
+    
 
     #Validacion de comuna
     reqCom = Myrequest.form.get('comunas')
     try: reqCom = int(reqCom)
     except:
         return [False,"comune isn't valid",reqCom]
-    if not  0 < reqCom < len(inf_reg_com[reqReg-1]['comunas']):
+    
+    dataComune = getCommune(USER,PASSWORD,HOST,region=reqReg)
+    
+    validate = False
+    for i in dataComune:
+        if i[1] == reqCom:
+            validate = True
+    if not validate :
         return [False,"comune isn't valid",reqCom]
 
     #Validacion de direcion
