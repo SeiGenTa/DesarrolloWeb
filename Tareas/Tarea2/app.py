@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request,redirect, url_for, jsonify
 from utils.clases import Donation, donation
 from utils.validations import donationValidate
-from database.db import getCommune,getRegion
+from database.db import getCommune,getRegion,saveDonate, savePhotos
 
 app = Flask(__name__)
 UPLOAD_FOLDER = 'static/svg'
@@ -22,7 +22,6 @@ def getRegions():
 @app.route('/get_communes', methods=['POST'])
 def getCommunes():
     var = request.get_json()
-    print(var)
     return getCommune(USER,PASSWORD,HOST, region = var['inf'])
 
 @app.route('/')
@@ -49,21 +48,23 @@ def form_add_order():
 @app.route('/agregar_donacion', methods=["GET", "POST"])
 def form_add_don():
     if request.method == "POST":
-        print(request.form.get('region'))
         '''
         this function validates if the request is correct
         #? return a list, example [true,"complete"] for case in than request is correct
         #!but for incorrect request, return [false,"{reason for error}","{part of request with error}"]
         '''
         valid = donationValidate(request) 
-        print(valid)
         if valid != [True,"complete"]:
-            return render_template("/forms/forms_donation.html",error = valid[1])
+            print(valid)
+            return render_template("/forms/forms_donation.html",data = {"error":valid[1]})
         myDonation = donation(request)
-        print(myDonation)
+        #* this function save the donation in DB and return the donation id 
+        idDonation = saveDonate(myDonation,USER,PASSWORD,HOST);
+        print(idDonation)
+        #savePhotos(idDonation,request.files.getlist('fotos'))
         return redirect(url_for("index"))
     if request.method == "GET":
-        return render_template("/forms/forms_donation.html")
+        return render_template("/forms/forms_donation.html", data = {"error":''})
 
 
 

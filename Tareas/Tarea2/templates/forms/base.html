@@ -12,6 +12,12 @@
         <div id="divFormu">{%block forms%}{%endblock%}</div>
         {% block javascript %}{% endblock %}
 
+        {%if data['error'] != ''%}
+            <script>
+                console.log("cositas");
+                window.alert({{data.error}});
+            </script>
+        {% endif %}
     </body>
 
 </html>
