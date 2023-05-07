@@ -40,11 +40,19 @@ def saveDonate(donation:Donation,user:str, password:str, host:str):
     mydb.close()
     return myId
 
-def savePhotos(id_donation:int, photos):
+def savePhotos(id_donation:int, request, user:str, password:str, host:str):
     mydb = mysql.connector.connect(host = host,user = user,password = password, database = "tarea2")
     myCursor = mydb.cursor()
+    photos = request.files.getlist('fotos')
     for photo in photos:
-        name_photo = uu.uuid4() 
-        extension = os.path.splitext(photo.filename)[1].lower()
-    pass
+        name_photo = str(uu.uuid4()) + os.path.splitext(photo.filename)[1].lower() 
+        photo.seek(0)
+        content_bytes = photo.read()
+        print("size",len(photo.read()))
+        route_archive = os.path.join(UPLOAD_FILE,name_photo)
+        with open(route_archive, "wb") as archive:
+            archive.write(content_bytes)
         
+        myCursor.execute(f"INSERT INTO foto (ruta_archivo, nombre_archivo, donacion_id) VALUES ('{UPLOAD_FILE}','{name_photo}','{id_donation}')")
+        mydb.commit()
+        mydb.close()

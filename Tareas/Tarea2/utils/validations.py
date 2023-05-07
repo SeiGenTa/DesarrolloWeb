@@ -35,6 +35,7 @@ def donationValidate(Myrequest):
         extension = os.path.splitext(photo.filename)[1].lower()
         photo.seek(0)
         sizeo = len(photo.read())
+        print("size", sizeo)
         if photo.content_type not in ALLOWED_MIMETYPES:
             return [False,"type of content isn't valid"] #Revisamos que realmente sea una foto
         

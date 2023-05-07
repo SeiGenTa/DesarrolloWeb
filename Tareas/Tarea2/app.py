@@ -61,7 +61,7 @@ def form_add_don():
         #* this function save the donation in DB and return the donation id 
         idDonation = saveDonate(myDonation,USER,PASSWORD,HOST);
         print(idDonation)
-        #savePhotos(idDonation,request.files.getlist('fotos'))
+        savePhotos(idDonation,request,USER,PASSWORD,HOST)
         return redirect(url_for("index"))
     if request.method == "GET":
         return render_template("/forms/forms_donation.html", data = {"error":''})
