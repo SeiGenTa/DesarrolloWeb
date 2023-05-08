@@ -6,22 +6,18 @@ import re
 import os
 
 HOST = 'localHost'
-USER = 'root'
-PASSWORD = 'PinoRojo'
+USER = 'cc5002'
+PASSWORD = 'programacionweb'
 
 dataRegion = getRegion(USER,PASSWORD,HOST)
-
+ALLOWED_EXTENSIONS = {".png", ".jpg", ".jpeg", ".gif"}
+ALLOWED_MIMETYPES = {"image/jpeg", "image/png", "image/gif"}
+TYPE_DONATION_VALIDE = {"fruta","verdura","otro"}
+AMOUNT_PHOTOS_MAX = 3
+AMOUNT_PHOTOS_MIN = 1
+SYZE_MAX = 4 * 1024 * 1024 ## Impodremos un maximo de 4 Mb por imagen
 
 def donationValidate(Myrequest):
-    ALLOWED_EXTENSIONS = {".png", ".jpg", ".jpeg", ".gif"}
-    ALLOWED_MIMETYPES = {"image/jpeg", "image/png", "image/gif"}
-    TYPE_DONATION_VALIDE = {"fruta","verdura","otro"}
-    AMOUNT_PHOTOS_MAX = 3
-    AMOUNT_PHOTOS_MIN = 1
-    SYZE_MAX = 4 * 1024 * 1024 ## Impodremos un maximo de 4 Mb por imagen
-    
-  
-
     #Validacion de fotos
     if 'fotos' not in Myrequest.files:
         return [False,"photos isn't existed"] #no viene ningun archivo
@@ -140,6 +136,83 @@ def donationValidate(Myrequest):
 
     #Validacion de numero de telefono
     reqNum = Myrequest.form.get('number-phone')
+    if not re.match("^\+569\d+$", reqNum):
+        print(18)
+        return [False,"phone numbert isn't valid"]
+    if len(reqNum) > 15:
+        return [False,"phone numbert isn't valid"]
+
+    return [True,"complete"]
+
+###VALIDACION DE PEDIDO
+def validationOrder(myResquest):
+    #Validacion de region
+    reqReg = myResquest.form.get('region')
+    #validamos que sea de la forma que queremos
+    try: reqReg = int(reqReg)
+    except: 
+        return [False,"region isn't valid",reqReg]
+    
+    valdita = False
+    for i in dataRegion:
+        if i[0] == reqReg:
+            valdita = True
+    if not valdita :
+        return [False,"region isn't valid",reqReg]
+    
+
+    #Validacion de comuna
+    reqCom = myResquest.form.get('comunas')
+    try: reqCom = int(reqCom)
+    except:
+        return [False,"comune isn't valid",reqCom]
+    
+    dataComune = getCommune(USER,PASSWORD,HOST,region=reqReg)
+    
+    validate = False
+    for i in dataComune:
+        if i[1] == reqCom:
+            validate = True
+    if not validate :
+        return [False,"comune isn't valid",reqCom]
+        
+    #Validacion de tipo de donacion
+    reqType = myResquest.form.get('tipeOrder')
+    if reqType == None:
+        return [False,"type of donation isn't valid",reqType]
+    if reqType not in TYPE_DONATION_VALIDE:
+        return [False,"type of donation isn't valid",reqType]
+
+        #validacion de description:
+    reqDes = myResquest.form.get('descripcion')
+    if reqDes != None:
+        if len(reqDes) > 80:
+            return [False,"description isn't valid"]
+    
+    #Validacion de cantidad
+    amount = myResquest.form.get('cantidad')
+    if amount == None:
+        return [False,"amount isn't valid",amount]
+    if not re.match("^[0-9]+[a-zA-Z]{0,3}$",amount):
+        return [False,"amount isn't valid",amount]
+    if len(amount) > 80:
+        return [False,"amount isn't valid",amount]
+
+    reqName = myResquest.form.get('name')
+    if reqName == None: 
+        return [False,"name isn't valid"]
+    if len(reqName) > 80:
+        return [False,"name isn't valid"]
+    
+    #Validacion de email
+    reqEmail = myResquest.form.get('email')
+    if not re.match("^[a-zA-Z0-9_.ñ-]+@[a-zA-Z0-9]+\.[a-zA-Z0-9.ñ]+$",reqEmail):
+        return [False,"email isn't valid, email have a ."]
+    if len(reqEmail) > 80:
+        return [False,"email isn't valid"]
+    
+    #Validacion de numero de telefono
+    reqNum = myResquest.form.get('number-phone')
     if not re.match("^\+569\d+$", reqNum):
         print(18)
         return [False,"phone numbert isn't valid"]

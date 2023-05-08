@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request,redirect, url_for, jsonify
 from utils.clases import Donation, donation
-from utils.validations import donationValidate
+from utils.validations import donationValidate, validationOrder
 from database.db import getCommune,getRegion,saveDonate, savePhotos
 
 app = Flask(__name__)
@@ -9,8 +9,8 @@ app.config['MAX_CONTENT_LENGTH'] = 13 * 1024 * 1024
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 HOST = 'localHost'
-USER = 'root'
-PASSWORD = 'PinoRojo'
+USER = 'cc5002'
+PASSWORD = 'programacionweb'
 
 def get_data():
     return HOST, USER, PASSWORD
@@ -40,9 +40,19 @@ def testing():
 @app.route('/agregar_pedido', methods=["GET", "POST"])
 def form_add_order():
     if request.method == "POST":
+        '''
+        this function validates if the request is correct
+        #? return a list, example [true,"complete"] for case in than request is correct
+        #!but for incorrect request, return [false,"{reason for error}","{part of request with error}"]
+        '''
+        valid = validationOrder(request)
+        if valid != [True,"complete"]:
+            print(valid)
+            return render_template("/forms/forms_donation.html",data = {"error":valid[1]})
+        print(valid)
         return redirect(url_for("index"))
     elif request.method == "GET":
-        return render_template("/forms/forms_add.html",regions = getRegion(USER,PASSWORD,HOST), communes = getCommunes(USER,PASSWORD,HOST))
+        return render_template("/forms/forms_order.html", data = {"error":''})
 
 
 @app.route('/agregar_donacion', methods=["GET", "POST"])

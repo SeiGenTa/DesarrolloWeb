@@ -1,0 +1,41 @@
+{%extends 'forms/base.html'%}
+{%block tittle%}agregar donacion{%endblock%}
+{%block modal%}
+<div id="ventana-emergente">
+    <p>¿Confirma que desea agregar este pedido?</p>
+    <button type="button" id="aceptar" onclick="aceptated(1)">Si, confirmo</button>
+    <button type="button" id="cancelar" onclick="aceptated(0)">No, quiero volver al formulario</button>
+</div>
+{%endblock%}
+
+{% block forms %}
+<p id="titulo">Agregar pedido</p>
+<form class="formulario" action="/agregar_pedido" id="formulario" method="post">
+    <p>Seleccione region *</p>
+    <select id="regiones" name="region" onchange="createComunaSelect()" ></select>
+    <p>Seleccione Comuna *</p>
+    <select id="comunas" name="comunas" onchange ="validationComuna()" ></select>
+    <p>tipo de pedido *</p>
+    <select id="tipe-order" name = "tipeOrder" onchange="validationTipo()" >
+        <option value="0">Seleccione tipo</option>
+        <option value="fruta">Frutas</option>
+        <option value="verduras">Verduras</option>
+        <option value="otro">Otros</option>
+    </select>
+    <p>Descripcion de pedido *</p>
+    <input id="descripcion" name="descripcion" type="text" onchange="validacionDescripcion()" >
+    <p>Cantidad de pedido *</p>
+    <input id="cantidad" name="cantidad" type="text" onchange="validateCantidad()" >
+    <p>Ingrese nombre solicitante *</p>
+    <input type="text" id = "name" name="name" onchange="validateName()" >
+    <p>Email *</p>
+    <input type="email" id = "email" name="email" onchange="validaEmail()">
+    <p>Numero de telefono</p>
+    <input type="text" id = "number-phone" name = "number-phone" placeholder="+569********" onchange="validateNumberPhone()">
+    <p></p>
+    <button type="submit" id="buttonValidate">Agregar pedido</button> 
+</form>
+{% endblock forms %}
+{% block javascript %}
+    <script src="{{ url_for('static', filename='JavaScripts/agregar-order.js') }}"></script>
+{%endblock%}

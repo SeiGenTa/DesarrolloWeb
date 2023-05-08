@@ -27,6 +27,7 @@ fetch('/get_regions')
 		return response.json();
 	})
 	.then(function(data) {
+		dataRegions = [];
 		data.forEach(element => {
 			dataRegions.push(element);
 		});
@@ -142,6 +143,14 @@ function validateCantidad(){
 		val.value = '';
 		val.style.border = "2px solid red";
 		validate_cantidad = false; //Si lo dejan vacio esto no estara validado
+	}
+	const numberCant = parseInt(idCantida.value);
+	if (numberCant < 0){
+		alert('Inserte valor valido');
+		idCantida.value = '';
+		idCantida.style.border = "2px solid red";
+        status_cantidad = false;
+		return;
 	}
 	else{
 		val.style.border = "2px solid rgba(0,0,0,0.2)";
