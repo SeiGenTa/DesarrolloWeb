@@ -8,6 +8,9 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css/forms.css')}}">
     </head>
     <body>
+        <div>
+            <a class="back-btn" href="{{ url_for('index') }}"><span>&larr;</span></a>
+        </div>
         {%block modal%}{%endblock%}
         <div id="divFormu">{%block forms%}{%endblock%}</div>
         {% block javascript %}{% endblock %}
@@ -15,7 +18,7 @@
         {%if data['error'] != ''%}
             <script>
                 console.log("cositas");
-                window.alert({{data.error}});
+                window.alert("'"{{data.error}}"'");
             </script>
         {% endif %}
     </body>

@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request,redirect, url_for, jsonify
-from utils.clases import Donation, donation
+from utils.clases import Donation, createDonation, createOrder
 from utils.validations import donationValidate, validationOrder
-from database.db import getCommune,getRegion,saveDonate, savePhotos
+from database.db import getCommune,getRegion,saveDonate, savePhotos, saveOrder
 
 app = Flask(__name__)
 UPLOAD_FOLDER = 'static/svg'
@@ -48,7 +48,9 @@ def form_add_order():
         valid = validationOrder(request)
         if valid != [True,"complete"]:
             print(valid)
-            return render_template("/forms/forms_donation.html",data = {"error":valid[1]})
+            return render_template("/forms/forms_order.html",data = {"error":valid[1]})
+        myOrder = createOrder(request)
+        saveOrder(myOrder,USER,PASSWORD,HOST)
         print(valid)
         return redirect(url_for("index"))
     elif request.method == "GET":
@@ -67,9 +69,9 @@ def form_add_don():
         if valid != [True,"complete"]:
             print(valid)
             return render_template("/forms/forms_donation.html",data = {"error":valid[1]})
-        myDonation = donation(request)
+        myDonation = createDonation(request)
         #* this function save the donation in DB and return the donation id 
-        idDonation = saveDonate(myDonation,USER,PASSWORD,HOST);
+        idDonation = saveDonate(myDonation,USER,PASSWORD,HOST)
         print(idDonation)
         savePhotos(idDonation,request,USER,PASSWORD,HOST)
         return redirect(url_for("index"))

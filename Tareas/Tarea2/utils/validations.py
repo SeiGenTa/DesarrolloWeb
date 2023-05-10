@@ -136,7 +136,7 @@ def donationValidate(Myrequest):
 
     #Validacion de numero de telefono
     reqNum = Myrequest.form.get('number-phone')
-    if not re.match("^\+569\d+$", reqNum):
+    if not re.match("^\+569\d{8}$", reqNum):
         print(18)
         return [False,"phone numbert isn't valid"]
     if len(reqNum) > 15:
@@ -183,16 +183,15 @@ def validationOrder(myResquest):
     if reqType not in TYPE_DONATION_VALIDE:
         return [False,"type of donation isn't valid",reqType]
 
-        #validacion de description:
+    #validacion de description:
     reqDes = myResquest.form.get('descripcion')
-    if reqDes != None:
-        if len(reqDes) > 80:
-            return [False,"description isn't valid"]
+    if reqDes == None:
+        return [False,"description isn't valid"]
+    if len(reqDes) > 250:
+        return [False,"description isn't valid"]
     
     #Validacion de cantidad
     amount = myResquest.form.get('cantidad')
-    if amount == None:
-        return [False,"amount isn't valid",amount]
     if not re.match("^[0-9]+[a-zA-Z]{0,3}$",amount):
         return [False,"amount isn't valid",amount]
     if len(amount) > 80:
@@ -213,10 +212,11 @@ def validationOrder(myResquest):
     
     #Validacion de numero de telefono
     reqNum = myResquest.form.get('number-phone')
-    if not re.match("^\+569\d+$", reqNum):
-        print(18)
-        return [False,"phone numbert isn't valid"]
-    if len(reqNum) > 15:
-        return [False,"phone numbert isn't valid"]
+    if reqNum != '':
+        if not re.match("^\+569\d{8}$", reqNum):
+            print(18)
+            return [False,"phone numbert isn't valid"]
+        if len(reqNum) > 15:
+            return [False,"phone numbert isn't valid"]
 
     return [True,"complete"]

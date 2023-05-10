@@ -7,6 +7,22 @@ def getIdCommune(region):
 	cursos = cnx.cursor()
 
 
+class Order():
+    def __init__(self, region, commune, type_order, description, amount, name, email, number_phone):
+        self.region = region
+        self.commune = commune
+        self.description = description
+        self.type_order = type_order
+        self.amount = amount
+        self.name = name
+        self.email = email
+        self.number_phone = number_phone
+        
+    def __str__(self):
+        return f"Order(region: {self.region}, commune: {self.commune}, type_order: {self.type_order}, description: {self.description}, amount: {self.amount}, name: {self.name}, email: {self.email}, number_phone: {self.number_phone})"
+    
+    def get(self):
+        return (self.region, self.commune, self.description, self.type_order, self.amount, self.name, self.email, self.number_phone)
 
 class Donation():
 	def __init__(self, commune, address, type_donation, amount, date, name, email, phone_number, description = None, condition = None):
@@ -28,11 +44,22 @@ class Donation():
 		return (self.commune_id, self.address,  self.typeD,
           self.amount_donation, self.date_available,self.description ,self.condition,
           self.name,  self.email, self.phone_number)
-		#return {'region': self.region,'commune': self.comuna,'addres': self.addres, 'tipeDonation': self.typeD,'amountDonation':self.amount_donation, 'date': self.date, 'photos':self.photos,
-        #  	'name': self.name, 'email': self.email, 'phoneNumber':self.phone_number ,'description':self.description ,'condition':self.condition}
         
+    
 #Constructors
-def donation(request):
+def createDonation(request):
     donate = Donation(request.form.get("comunas"), request.form.get("calle-numero"), request.form.get("tipoDonacion"), request.form.get("cantidad"), request.form.get("fecha"), request.form.get("name_donante"), request.form.get("email_donante"), request.form.get("number-phone"),description=request.form.get("descripcion"),condition=request.form.get("condiciones"))
     return donate
+
+def createOrder(request):
+    region = request.form.get('region')
+    commune = request.form.get('comunas')
+    type_order = request.form.get('tipeOrder')
+    description = request.form.get('descripcion')
+    amount = request.form.get('cantidad')
+    name = request.form.get('name')
+    email = request.form.get('email')
+    number_phone = request.form.get('number-phone')
+
+    return Order(region, commune, type_order, description,amount, name, email, number_phone)
 

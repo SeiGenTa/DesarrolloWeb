@@ -109,4 +109,20 @@ body{
     background-color: #0d8bf2;
   }
 
-  
+/* Boton BACK */
+.back-btn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #fff;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  color: #333;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 10px 10px;
+}
+
+.back-btn span {
+  margin-right: 5px;
+}

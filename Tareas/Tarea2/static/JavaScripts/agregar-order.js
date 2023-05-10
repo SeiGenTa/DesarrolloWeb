@@ -182,11 +182,11 @@ function validaEmail(){
 
 //Validacion del numero
 function validateNumberPhone(){
-	const regexTelefono = /^\+569\d+$/;
+	const regexTelefono = /^\+569\d{8}$/;
 	const numeroTelefono = idNumero.value;
 	if (numeroTelefono == ''){
 		idNumero.style.border = "2px solid rgba(0,0,0,0.2)";
-        status_numeroCelular = false;
+        status_numeroCelular = true;
 	}else if (!regexTelefono.test(numeroTelefono)) {
 		idNumero.value = '';
 		alert('El número de teléfono ingresado no es válido');

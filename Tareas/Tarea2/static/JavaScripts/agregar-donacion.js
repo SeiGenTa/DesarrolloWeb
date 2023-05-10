@@ -143,6 +143,7 @@ function validateCantidad(){
 		val.value = '';
 		val.style.border = "2px solid red";
 		validate_cantidad = false; //Si lo dejan vacio esto no estara validado
+		return
 	}
 	const numberCant = parseInt(idCantida.value);
 	if (numberCant < 0){
@@ -262,7 +263,7 @@ function validateEmail(){
 emailInput.addEventListener('change', (event) => {validateEmail()});
 
 function validateNumberCont(){
-	const regexTelefono = /^\+569\d+$/;
+	const regexTelefono = /^\+569\d{8}$/;
 	const numeroTelefono = number_phone.value;
 	if (numeroTelefono == ''){
 		number_phone.style.border = "2px solid red";
