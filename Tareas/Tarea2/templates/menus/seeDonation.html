@@ -1,0 +1,16 @@
+{%extends 'menus/base.html' %}
+{%block title %}Ver pedidos{%endblock%}
+{%block body%}
+    <div id = "table">
+        <table id = "donaciones">
+        </table>
+        <div id = "changePags">
+            {%if pag != 1%}
+            <a class="changePag" id="change-1 " href="{{ url_for('see_donations',pag = pag-1) }}"><span>&larr;</span></a>
+            {%endif%}
+            <p class="numPag" id="text-pag">pagina {{pag}}</p>
+            <a class="changePag" id="change+1" href="{{ url_for('see_donations',pag = pag+1) }}"><span>&rarr;</span></a>
+        </div>
+    </div>
+{%endblock %}
+{%block javascript%}{%endblock%}

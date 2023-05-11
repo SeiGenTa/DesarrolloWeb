@@ -6,7 +6,7 @@ import os
 from utils.clases import Donation,Order
 
 #* function that put the donation in DB
-UPLOAD_FILE = "static/uploads"
+
 
 def getRegion(user:str, password:str, host:str):
     mydb = mysql.connector.connect(host = host,user = user,password = password,database = "tarea2")
@@ -37,25 +37,23 @@ def saveDonate(donation:Donation,user:str, password:str, host:str):
     myId = myCursor.lastrowid
     mydb.commit()
     mydb.close()
-    print(f"se guardo la donacion: {donation}")
     return myId
 
-def savePhotos(id_donation:int, request, user:str, password:str, host:str):
+def savePhotos(id_donation:int, request, user:str, password:str, host:str,UPLOAD_FILE = "static/uploads"):
     mydb = mysql.connector.connect(host = host,user = user,password = password, database = "tarea2")
     myCursor = mydb.cursor()
     photos = request.files.getlist('fotos')
     for photo in photos:
-        name_photo = str(uu.uuid4()) + os.path.splitext(photo.filename)[1].lower() 
+        _fileName = str(uu.uuid4()) + os.path.splitext(photo.filename)[1].lower() 
         photo.seek(0)
-        content_bytes = photo.read()
-        print("size",len(photo.read()))
-        route_archive = os.path.join(UPLOAD_FILE,name_photo)
-        with open(route_archive, "wb") as archive:
-            archive.write(content_bytes)
+        _ContentBytes = photo.read()
+        routeNewFile = os.path.join(UPLOAD_FILE,_fileName)
+        with open(routeNewFile, "wb") as archive:
+            archive.write(_ContentBytes)
         
-        myCursor.execute(f"INSERT INTO foto (ruta_archivo, nombre_archivo, donacion_id) VALUES ('{UPLOAD_FILE}','{name_photo}','{id_donation}')")
+        myCursor.execute(f"INSERT INTO foto (ruta_archivo, nombre_archivo, donacion_id) VALUES ('{UPLOAD_FILE}','{_fileName}','{id_donation}')")
         mydb.commit()
-        mydb.close()
+    mydb.close()
     
 def saveOrder(order:Order,user:str, password:str, host:str):
     mydb = mysql.connector.connect(host = host,user = user,password = password, database = "tarea2")
@@ -65,4 +63,14 @@ def saveOrder(order:Order,user:str, password:str, host:str):
     myCursor.execute(sentence+save+")")
     mydb.commit()
     mydb.close()
-    print(f"se guardo la donacion: {order}")
+    
+def getDonation(user:str, password:str, host:str, pag = 1):
+    mydb = mysql.connector.connect(host = host,user = user,password = password, database = "tarea2")
+    myCursor = mydb.cursor()
+    sentence = f"SELECT * FROM donacion LIMIT {(pag-1)*5},5"
+    myCursor.execute(sentence)
+    donations = myCursor.fetchall()
+    print(donations[1])
+    
+def getPhotos(idUser):
+    pass

@@ -1,10 +1,10 @@
 from flask import Flask, render_template, request,redirect, url_for, jsonify
 from utils.clases import Donation, createDonation, createOrder
 from utils.validations import donationValidate, validationOrder
-from database.db import getCommune,getRegion,saveDonate, savePhotos, saveOrder
+from database.db import getCommune,getRegion,saveDonate, savePhotos, saveOrder, getDonation
 
 app = Flask(__name__)
-UPLOAD_FOLDER = 'static/svg'
+UPLOAD_FOLDER = 'static/uploads'
 app.config['MAX_CONTENT_LENGTH'] = 13 * 1024 * 1024
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -73,12 +73,21 @@ def form_add_don():
         #* this function save the donation in DB and return the donation id 
         idDonation = saveDonate(myDonation,USER,PASSWORD,HOST)
         print(idDonation)
-        savePhotos(idDonation,request,USER,PASSWORD,HOST)
+        savePhotos(idDonation,request,USER,PASSWORD,HOST,app.config['UPLOAD_FOLDER'])
         return redirect(url_for("index"))
     if request.method == "GET":
         return render_template("/forms/forms_donation.html", data = {"error":''})
 
-
+@app.route('/ver_donaciones/<int:pag>', methods = ["GET"])
+def see_donations(pag):
+    if request.method == "GET":
+        return render_template('/menus/seeDonation.html',pag = pag,data = getDonation(USER,PASSWORD,HOST,pag))
+    
+@app.route('/ver_pedidos', methods = ["GET"])
+def see_orders():
+    if request.method == "GET":
+        return render_template('/menus/seeOrder.html')
+    
 
 @app.route('/info_donaciones', methods=["GET"])
 def inf_donaciones():

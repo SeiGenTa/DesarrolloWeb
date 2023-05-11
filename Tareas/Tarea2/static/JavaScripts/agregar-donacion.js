@@ -310,10 +310,10 @@ button.addEventListener('click',function(evento) {
 		validateReg();
 		validate=false;
 	}
-	if (!validate_com ){
-		validateComuna();
-		 validate=false;
-	}
+	//if (!validate_com ){
+//		validateComuna();
+		 //validate=false;
+	//}
 	if (!validate_calleNum){
 		validateDirection();
 		validate=false;

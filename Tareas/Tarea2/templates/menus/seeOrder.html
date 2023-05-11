@@ -1,0 +1,14 @@
+{%extends 'menus/base.html' %}
+{%block title %}Ver pedidos{%endblock%}
+{%block body%}
+    <div id = "table">
+        <table id = "pedidos">
+        </table>
+    </div>
+    <div>
+        <a class="changePag" id="change-1 " href="{{ url_for('index') }}"><span>&larr;</span></a>
+        <p class="numPag" id="text-pag"></p>
+        <a class="changePag" id="change+1"><span>&rarr;</span></a>
+    </div>
+{%endblock %}
+{%block javascript%}{%endblock%}

@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{% block title %}{% endblock%}</title>
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/menu.css')}}">
-        {%block css%}{%endblock css%}
+        {%block css%}{%endblock%}
     </head>
     <body>
         <header>
@@ -16,13 +16,11 @@
             <div id="center" >
                 <div><a class="button" href="{{ url_for('form_add_don') }}">Agregar donaciones</a> </div>
                 <div><a class="button" href="{{ url_for('form_add_order') }}">Agregar Pedido</a> </div>
-                <div><a class="button" href="{{ url_for('inf_donaciones') }}">Ver Donaciones</a> </div>
-                <div><a class="button" href="{{ url_for('inf_pedidos') }}">Ver Pedidos</a> </div>
+                <div><a class="button" href="{{ url_for('see_donations',pag = 1) }}">Ver Donaciones</a> </div>
+                <div><a class="button" href="{{ url_for('see_orders') }}">Ver Pedidos</a> </div>
             </div>
         </div>
-        <div>
-            {%block body%}{%endblock body%}
-        </div>
-        {% block javascript %}{% endblock javascript %}
+        {%block body%}{%endblock%}
+        {% block javascript %}{% endblock%}
     </body>
 </html>
