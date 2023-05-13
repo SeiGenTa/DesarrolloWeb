@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request,redirect, url_for, jsonify
-from utils.clases import Donation, createDonation, createOrder
+from utils.clases import createDonation, createOrder
 from utils.validations import donationValidate, validationOrder
-from database.db import getCommune,getRegion,saveDonate, savePhotos, saveOrder, getDonation
+from database.db import getCommune,getRegion,saveDonate, savePhotos, saveOrder, get5Donation
 
 app = Flask(__name__)
 UPLOAD_FOLDER = 'static/uploads'
@@ -12,18 +12,17 @@ HOST = 'localHost'
 USER = 'cc5002'
 PASSWORD = 'programacionweb'
 
-def get_data():
-    return HOST, USER, PASSWORD
+userConnection = {"HOST":HOST, "USER":USER, "PASSWORD":PASSWORD}
 
 @app.route('/get_regions')
 def getRegions():
-    return getRegion(USER,PASSWORD,HOST)
+    return jsonify(getRegion(userConnection))
     
 @app.route('/get_communes', methods=['POST'])
 def getCommunes():
     var = request.get_json()
-    return getCommune(USER,PASSWORD,HOST, region = var['inf'])
-
+    return jsonify(getCommune(userConnection, region = var['inf'])
+)
 @app.route('/')
 def index():
     return render_template("/menus/initio.html");
@@ -50,7 +49,7 @@ def form_add_order():
             print(valid)
             return render_template("/forms/forms_order.html",data = {"error":valid[1]})
         myOrder = createOrder(request)
-        saveOrder(myOrder,USER,PASSWORD,HOST)
+        saveOrder(myOrder,userConnection)
         print(valid)
         return redirect(url_for("index"))
     elif request.method == "GET":
@@ -71,9 +70,9 @@ def form_add_don():
             return render_template("/forms/forms_donation.html",data = {"error":valid[1]})
         myDonation = createDonation(request)
         #* this function save the donation in DB and return the donation id 
-        idDonation = saveDonate(myDonation,USER,PASSWORD,HOST)
+        idDonation = saveDonate(myDonation,userConnection)
         print(idDonation)
-        savePhotos(idDonation,request,USER,PASSWORD,HOST,app.config['UPLOAD_FOLDER'])
+        savePhotos(idDonation,request,userConnection,app.config['UPLOAD_FOLDER'])
         return redirect(url_for("index"))
     if request.method == "GET":
         return render_template("/forms/forms_donation.html", data = {"error":''})
@@ -81,12 +80,12 @@ def form_add_don():
 @app.route('/ver_donaciones/<int:pag>', methods = ["GET"])
 def see_donations(pag):
     if request.method == "GET":
-        return render_template('/menus/seeDonation.html',pag = pag,data = getDonation(USER,PASSWORD,HOST,pag))
+        return render_template('/menus/seeDonation.html',pag = pag,data = get5Donation(userConnection,pag =pag))
     
-@app.route('/ver_pedidos', methods = ["GET"])
-def see_orders():
+@app.route('/ver_pedidos/<int:pag>', methods = ["GET"])
+def see_orders(pag):
     if request.method == "GET":
-        return render_template('/menus/seeOrder.html')
+        return render_template('/menus/seeOrder.html', pag= pag)
     
 
 @app.route('/info_donaciones', methods=["GET"])

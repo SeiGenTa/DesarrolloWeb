@@ -9,7 +9,9 @@ HOST = 'localHost'
 USER = 'cc5002'
 PASSWORD = 'programacionweb'
 
-dataRegion = getRegion(USER,PASSWORD,HOST)
+userConnection = {"HOST":HOST, "USER":USER, "PASSWORD":PASSWORD}
+
+dataRegion = getRegion(userConnection)
 ALLOWED_EXTENSIONS = {".png", ".jpg", ".jpeg", ".gif"}
 ALLOWED_MIMETYPES = {"image/jpeg", "image/png", "image/gif"}
 TYPE_DONATION_VALIDE = {"fruta","verdura","otro"}
@@ -64,7 +66,7 @@ def donationValidate(Myrequest):
     except:
         return [False,"comune is not valid",reqCom]
     
-    dataComune = getCommune(USER,PASSWORD,HOST,region=reqReg)
+    dataComune = getCommune(userConnection,region=reqReg)
     
     validate = False
     for i in dataComune:
@@ -167,7 +169,7 @@ def validationOrder(myResquest):
     except:
         return [False,"comune is not valid",reqCom]
     
-    dataComune = getCommune(USER,PASSWORD,HOST,region=reqReg)
+    dataComune = getCommune(userConnection,region=reqReg)
     
     validate = False
     for i in dataComune:

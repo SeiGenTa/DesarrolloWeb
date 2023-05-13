@@ -2,7 +2,26 @@
 {%block title %}Ver pedidos{%endblock%}
 {%block body%}
     <div id = "table">
+        {% if data %}
         <table id = "donaciones">
+            <tr class="tittle-table">
+                <td>Comuna</td>
+                <td>tipo</td>
+                <td>cantidad</td>
+                <td>fecha de disponibilidad</td>
+                <td>nombre</td>
+                <td>foto</td>
+            </tr>
+            {% for donation in data %}
+            <tr class="{{ loop.cycle('zebra-even', 'zebra-odd') }}">
+                <td>{{donation.commune}}</td>
+                <td>{{donation.type}}</td>
+                <td>{{donation.ammount}}</td>
+                <td>{{donation.date}}</td>
+                <td>{{donation.name}}</td>
+                <td><img class="image_table" src={{url_for(donation.dir, filename=donation.photo) }}></td>
+            </tr>
+            {% endfor %}
         </table>
         <div id = "changePags">
             {%if pag != 1%}
@@ -11,6 +30,11 @@
             <p class="numPag" id="text-pag">pagina {{pag}}</p>
             <a class="changePag" id="change+1" href="{{ url_for('see_donations',pag = pag+1) }}"><span>&rarr;</span></a>
         </div>
+        {% else %}
+        <div class="msg_center"><p> No existen mas donaciones</p></div>
+            
+        {% endif %}
+
     </div>
 {%endblock %}
 {%block javascript%}{%endblock%}
