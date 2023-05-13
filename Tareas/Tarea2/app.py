@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request,redirect, url_for, jsonify
 from utils.clases import createDonation, createOrder
 from utils.validations import donationValidate, validationOrder
-from database.db import getCommune,getRegion,saveDonate, savePhotos, saveOrder, get5Donation
+from database.db import getCommune,getRegion,saveDonate, savePhotos, saveOrder, get5Donation,get5Pedidos,getDonationID,getPedidoId
 
 app = Flask(__name__)
 UPLOAD_FOLDER = 'static/uploads'
@@ -85,18 +85,21 @@ def see_donations(pag):
 @app.route('/ver_pedidos/<int:pag>', methods = ["GET"])
 def see_orders(pag):
     if request.method == "GET":
-        return render_template('/menus/seeOrder.html', pag= pag)
+        return render_template('/menus/seeOrder.html', pag= pag, data = get5Pedidos(userConnection,pag =pag))
     
 
-@app.route('/info_donaciones', methods=["GET"])
-def inf_donaciones():
+@app.route('/info_donaciones/<int:id>', methods=["GET"])
+def inf_donaciones(id):
     if request.method == "GET":
-        return render_template('/menus/info_donation.html', pag = 1)
+        donation = getDonationID(userConnection,id)
+        return render_template('/info/info_donation.html', id = id, data = donation)
 
-@app.route('/info_pedidos', methods=["GET"])
-def inf_pedidos():
+@app.route('/info_pedidos/<int:id>', methods=["GET"])
+def inf_pedidos(id):
     if request.method == "GET":
-        return render_template('/menus/info_order.html', pag = 1)
+        pedido = getPedidoId(userConnection,id)
+        print(pedido)
+        return render_template('/info/info_order.html', id = id,data = pedido)
 
 if __name__ == "__main__":
     app.run(port=5000,debug=True)

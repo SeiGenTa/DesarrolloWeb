@@ -25,6 +25,14 @@ def getRegion(userConnection):
     mycursos.close()
     return data
 
+def getRegionID(userConnection,id):
+    mySQL = conection(userConnection)
+    mycursos = mySQL.cursor()
+    mycursos.execute(f"SELECT id, nombre FROM region WHERE id = {id}")
+    data = mycursos.fetchone()
+    mycursos.close()
+    return data
+
 def getCommune(userConnection, region:int = None):
     mySQL = conection(userConnection)
     mycursor = mySQL.cursor()
@@ -116,5 +124,74 @@ def get5Donation(userConnection,pag = 1):
         donations.append(donation)
         
     return donations
+
+def getPedidos(userConnection,pag = 1):
+    mySQL = conection(userConnection)
+    mycursor = mySQL.cursor()
+    sentence = f"SELECT * FROM pedido LIMIT {(pag-1)*5},5"
+    mycursor.execute(sentence)
+    donations = mycursor.fetchall()
+    mySQL.close()
+    return donations
+
+def get5Pedidos(userConnection,pag):
+    _orders = getPedidos(userConnection,pag)
+    orders = []
+    for order in _orders:
+        donation = {
+            "commune": getCommuneID(userConnection, order[1])[0][2],
+            "type": order[2],
+            "description": order[3],
+            "amount": order[4],
+            "name": order[5],
+            "id_order": order[0]
+        }
+        orders.append(donation)
         
+    return orders
+
+def getDonationID(userConnection,id):
+    mySQL = conection(userConnection)
+    mycursor = mySQL.cursor()
+    sentence = f"SELECT * FROM donacion WHERE id = {id}"
+    mycursor.execute(sentence)
+    _donation = mycursor.fetchone()
+    _comuna = getCommuneID(userConnection,_donation[1])
+    _region = getRegionID(userConnection,_comuna[0][0])
     
+    _photos = getPhotos(userConnection,id)
+    myDonation ={
+        "region": _region[1],
+        "commune": _comuna[0][2],
+        "calle": _donation[2],
+        "typeDonation": _donation[3],
+        "amount":_donation[4],
+        "date":_donation[5],
+        "description":_donation[6],
+        "name":_donation[8],
+        "email":_donation[9],
+        "number":_donation[10],
+        "photos":_photos
+    }
+    
+    return myDonation
+
+def getPedidoId(userConnection,id):
+    mySQL = conection(userConnection)
+    mycursor = mySQL.cursor()
+    sentence = f"SELECT * FROM pedido WHERE id = {id}"
+    mycursor.execute(sentence)
+    _order = mycursor.fetchone()
+    _comuna = getCommuneID(userConnection,_order[1])
+    _region = getRegionID(userConnection,_comuna[0][0])
+    myOrder = {
+        "region":_region[1],
+        "Commune":_comuna[0][2],
+        "type":_order[2],
+        "description":_order[3],
+        "amount":_order[4],
+        "name":_order[5],
+        "email":_order[6],
+        "number":_order[7]
+    }
+    return myOrder

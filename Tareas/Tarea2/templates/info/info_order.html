@@ -1,0 +1,38 @@
+{% extends 'info/base.html' %}
+{% block title %}{% endblock%}
+{%block css%}{%endblock%}
+
+{%block body%}
+<div class="espaceTotal">
+    <div class="Header"><p>Informacion de donacion</p></div>
+    
+    <div class = "cuerpo"> 
+        <div class="barraLeft">
+            <p class = "enunciado">Region</p>
+                <p>{{data.region}}</p>
+            <p class = "enunciado">Comuna</p>
+                <p>{{data.Commune}}</p>
+            <p class = "enunciado">Tipo de pedido</p>
+                <p>{{data.type}}</p>
+            <p class = "enunciado">Descripcion</p>
+                <p>{{data.description}}</p>
+                <p class = "enunciado">Cantidad</p>
+                <p>{{data.amount}}</p>
+        </div>
+        <div class="barraRight">
+
+        <p class = "enunciado">Nombre de donante</p>
+            <p>{{data.name}}</p>
+        <p class = "enunciado">Email de donante</p>
+            <p>{{data.email}}</p>
+        <p class = "enunciado">Numero</p>
+            <p>{{data.number}}</p>
+        </div>
+    </div>
+    <div>
+        <a class="back-btn" href="{{ url_for('index') }}"><span>Volver al inicio</span></a>
+    </div>
+</div>
+<div onclick="desaparecer()" id="ventana-emergente"></div>
+{%endblock%}
+{% block javascript %}<script src="{{ url_for('static', filename='JavaScripts/seeDonationLogic.js') }}"></script>{% endblock%}

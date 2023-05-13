@@ -1,9 +1,9 @@
 {%extends 'menus/base.html' %}
-{%block title %}Ver pedidos{%endblock%}
+{%block title %}Ver donacion{%endblock%}
 {%block body%}
     <div id = "table">
         {% if data %}
-        <table id = "donaciones">
+        <table id = "table-ord-dona">
             <tr class="tittle-table">
                 <td>Comuna</td>
                 <td>tipo</td>
@@ -13,7 +13,7 @@
                 <td>foto</td>
             </tr>
             {% for donation in data %}
-            <tr class="{{ loop.cycle('zebra-even', 'zebra-odd') }}">
+            <tr class="{{ loop.cycle('zebra-even', 'zebra-odd') }}" data-url="{{ url_for('inf_donaciones', id=donation.id_donation) }}">
                 <td>{{donation.commune}}</td>
                 <td>{{donation.type}}</td>
                 <td>{{donation.ammount}}</td>
@@ -37,4 +37,6 @@
 
     </div>
 {%endblock %}
-{%block javascript%}{%endblock%}
+{%block javascript%}
+    <script src="{{ url_for('static', filename='JavaScripts/menus.js') }}"></script>
+{%endblock%}

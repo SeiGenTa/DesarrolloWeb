@@ -49,7 +49,7 @@ main()
 
 const ventanaEmergente = document.getElementById("ventana-emergente");
 function agrandarImagen(i){
-    ventanaEmergente.innerHTML ='<img src="../photos/'+(informacionDonancion.Fotos)[i]+'">';
+    ventanaEmergente.innerHTML ='<img src=i>';
     ventanaEmergente.style.display = 'block';
 }
 
