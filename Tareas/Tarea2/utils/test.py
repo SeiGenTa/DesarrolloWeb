@@ -380,3 +380,5 @@ class Tests(un.TestCase):
 
 if __name__ == '__main__':
     un.main()
+
+#Se hicieron para probar ciertas cosas, pero termino quedando obsoleto por la forma en la que se transporta la informacion (el cambio de la base de datos de las regiones y las comunas)
