@@ -16,6 +16,19 @@ const condicionDeRetiro = document.getElementById('condiciones')
 const button = document.getElementById('buttonValidate')
 const form = document.getElementById('formulario')
 
+const emeReg = document.getElementById('emergenteRegion')
+const emeCom = document.getElementById('emergenteCommune')
+const emeDir = document.getElementById('emergentedirection')
+const emeType = document.getElementById('emergentetype')
+const emeAmount = document.getElementById('emergenteAmount')
+const emeDate = document.getElementById('emergenteDate')
+const emeDes = document.getElementById('emergenteDescription')
+const emeCond = document.getElementById('emergenteCondition')
+const emePhoto = document.getElementById('emergentePhotos')
+const emeName = document.getElementById('emergenteName')
+const emeEmail = document.getElementById('emergenteEmail')
+const emeNum = document.getElementById('emergenteNumber')
+
 dataRegions = []
 dataCommunes = []
 
@@ -92,7 +105,6 @@ function validateComuna(){
 			if (val.value == element[1]){
 				validate_com = true; //a la vez lo validaremos
 				val.style.border = "2px solid rgba(0,0,0,0.2)";
-				return
 			}})
 	}
 	else{
@@ -310,10 +322,10 @@ button.addEventListener('click',function(evento) {
 		validateReg();
 		validate=false;
 	}
-	//if (!validate_com ){
-//		validateComuna();
-		 //validate=false;
-	//}
+	if (!validate_com ){
+		validateComuna();
+		 validate=false;
+	}
 	if (!validate_calleNum){
 		validateDirection();
 		validate=false;

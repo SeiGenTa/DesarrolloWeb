@@ -20,6 +20,9 @@
                 <div><a class="button" href="{{ url_for('see_orders', pag = 1) }}">Ver Pedidos</a> </div>
             </div>
         </div>
+        {% if msg %}
+            <div class="msg_center"><p>{{msg}}</p></div>
+        {% endif %}
         {%block body%}{%endblock%}
         {% block javascript %}{% endblock%}
     </body>

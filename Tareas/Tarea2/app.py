@@ -23,9 +23,12 @@ def getCommunes():
     var = request.get_json()
     return jsonify(getCommune(userConnection, region = var['inf'])
 )
-@app.route('/')
+@app.route('/',methods=["GET"])
 def index():
-    return render_template("/menus/initio.html");
+    data = request.args.get("msg")
+    if data:
+        return render_template("/menus/initio.html",msg = data);
+    return render_template("/menus/initio.html")
 
 @app.route('/test', methods=["GET","POST"])
 def testing():
@@ -51,7 +54,8 @@ def form_add_order():
         myOrder = createOrder(request)
         saveOrder(myOrder,userConnection)
         print(valid)
-        return redirect(url_for("index"))
+        msg = "orden aprovada"
+        return redirect(url_for("index",msg=msg))
     elif request.method == "GET":
         return render_template("/forms/forms_order.html", data = {"error":''})
 
@@ -73,7 +77,8 @@ def form_add_don():
         idDonation = saveDonate(myDonation,userConnection)
         print(idDonation)
         savePhotos(idDonation,request,userConnection,app.config['UPLOAD_FOLDER'])
-        return redirect(url_for("index"))
+        msg = "donacion aprovada"
+        return redirect(url_for("index",msg=msg))
     if request.method == "GET":
         return render_template("/forms/forms_donation.html", data = {"error":''})
 

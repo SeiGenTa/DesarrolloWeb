@@ -77,7 +77,7 @@ def donationValidate(Myrequest):
 
     #Validacion de direcion
     reqAddre = Myrequest.form.get('calle-numero')
-    if reqAddre == None:
+    if reqAddre == "":
         return [False,"addres is not valid",reqAddre]
     if len(reqAddre) > 80:
         return [False,"addres is not valid",reqAddre]
