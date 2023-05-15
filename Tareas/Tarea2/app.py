@@ -54,7 +54,7 @@ def form_add_order():
         myOrder = createOrder(request)
         saveOrder(myOrder,userConnection)
         print(valid)
-        msg = "orden aprovada"
+        msg = "El pedido a sido aceptada y recibida correctamente"
         return redirect(url_for("index",msg=msg))
     elif request.method == "GET":
         return render_template("/forms/forms_order.html", data = {"error":''})
@@ -77,7 +77,7 @@ def form_add_don():
         idDonation = saveDonate(myDonation,userConnection)
         print(idDonation)
         savePhotos(idDonation,request,userConnection,app.config['UPLOAD_FOLDER'])
-        msg = "donacion aprovada"
+        msg = "La donacion a sido aceptada y recibida correctamente"
         return redirect(url_for("index",msg=msg))
     if request.method == "GET":
         return render_template("/forms/forms_donation.html", data = {"error":''})

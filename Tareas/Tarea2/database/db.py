@@ -1,4 +1,3 @@
-import mysql as sql
 import pymysql as psql
 import uuid as uu
 import os
@@ -109,8 +108,12 @@ def get5Donation(userConnection,pag = 1):
     _donations = getDonation(userConnection, pag)
     donations = []
     for _donation in _donations:
-        _photo = getPhotos(userConnection,_donation[0])[0]
-            
+        _photos = getPhotos(userConnection,_donation[0])
+        photosForDonation = []
+        for i in _photos:
+            photosForDonation.append(f"uploads/{i[1]}")
+        
+        print(photosForDonation)
         donation = {
             "commune": getCommuneID(userConnection, _donation[1])[0][2],
             "type": _donation[3],
@@ -118,7 +121,7 @@ def get5Donation(userConnection,pag = 1):
             "date": _donation[5],
             "name": _donation[8],
             "dir":"static",
-            "photo":f"uploads/{_photo[1]}",
+            "photo":photosForDonation,
             "id_donation": _donation[0]
         }
         donations.append(donation)

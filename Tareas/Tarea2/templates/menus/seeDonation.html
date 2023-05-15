@@ -19,7 +19,11 @@
                 <td>{{donation.ammount}}</td>
                 <td>{{donation.date}}</td>
                 <td>{{donation.name}}</td>
-                <td><img class="image_table" src={{url_for(donation.dir, filename=donation.photo) }}></td>
+                <td class="ubqFotos">
+                {% for i in donation.photo %}
+                   <img class="image_table" src={{url_for(donation.dir, filename=i) }} alt = "">
+                {% endfor  %}
+                </td>
             </tr>
             {% endfor %}
         </table>

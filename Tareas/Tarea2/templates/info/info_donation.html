@@ -1,5 +1,5 @@
 {% extends 'info/base.html' %}
-{% block title %}{% endblock%}
+{% block title %}Informacion de donacion{% endblock%}
 {%block css%}{%endblock%}
 
 {%block body%}
@@ -33,7 +33,7 @@
             <p class = "enunciado">fotos</p>
             {% for photo in data.photos %}
     
-            <img class="image_info" src={{url_for('static', filename='uploads/'+photo[1]) }} onclick="agrandarImagen('{{url_for('static', filename='uploads/'+photo[1]) }}')">
+            <img class="image_info" src={{url_for('static', filename='uploads/'+photo[1]) }} onclick="agrandarImagen('{{url_for('static', filename='uploads/'+photo[1]) }}')" alt = "">
             {% endfor %}
         </div>
     </div>
