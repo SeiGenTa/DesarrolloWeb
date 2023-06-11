@@ -1,0 +1,11 @@
+:root {
+    --background-color: #2D2727;
+    --secondary-color: #8F43EE;
+    --select-color: #F0EB8D;
+}
+
+
+.main-container {
+    display: flex;
+    flex-flow: row wrap;
+}

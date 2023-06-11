@@ -17,10 +17,14 @@
                 <div><a class="button" href="{{ url_for('form_add_don') }}">Agregar donaciones</a> </div>
                 <div><a class="button" href="{{ url_for('form_add_order') }}">Agregar Pedido</a> </div>
                 <div><a class="button" href="{{ url_for('see_donations',pag = 1) }}">Ver Donaciones</a> </div>
-                <div><a class="button" href="{{ url_for('see_orders') }}">Ver Pedidos</a> </div>
+                <div><a class="button" href="{{ url_for('see_orders', pag = 1) }}">Ver Pedidos</a> </div>
             </div>
         </div>
+        {% if msg %}
+            <div class="msg_center"><p>{{msg}}</p></div>
+        {% endif %}
         {%block body%}{%endblock%}
         {% block javascript %}{% endblock%}
+
     </body>
 </html>

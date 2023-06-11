@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Leaflet MarkerCluster Example</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
+    <style>
+        #map {
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+    <script>
+        // Crear un objeto de mapa
+        var map = L.map('map').setView([51.505, -0.09], 13);
+
+        // Agregar una capa de mosaico (tile layer) al mapa
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+            maxZoom: 18
+        }).addTo(map);
+
+        // Crear un objeto de agrupación de marcadores
+        var markers = L.markerClusterGroup();
+
+        // Crear marcadores individuales y agregarlos al grupo
+        var marker1 = L.marker([51.5, -0.09]);
+        var marker2 = L.marker([51.51, -0.1]);
+        var marker3 = L.marker([51.49, -0.08]);
+
+        markers.addLayer(marker1);
+        markers.addLayer(marker2);
+        markers.addLayer(marker3);
+
+        // Agregar el grupo de marcadores al mapa
+        map.addLayer(markers);
+    </script>
+</body>
+</html>

@@ -73,7 +73,6 @@ a{
     left : 0px;
     height: auto;
     width: 100%;
-    background-color: #ff0909;
     z-index: -1;
     flex-direction: column;
 }
@@ -82,7 +81,6 @@ a{
     margin-right:10px;
     margin-left:10px;
     border: 1px;
-    background: rgb(43, 168, 166);
     display: flex;
     height: 100%;
     width: auto;
@@ -98,4 +96,48 @@ a{
     height: auto;
     width: auto;
     justify-content: center;
+}
+
+/*Tablas*/
+
+/* Estilo para las filas pares */
+.zebra-even {
+    background-color: #8FC1B5;
+}
+
+/* Estilo para las filas impares */
+.zebra-odd {
+    background-color: #589A8D;
+}
+
+table{
+    border-collapse: collapse;
+    z-index: 0;
+}
+
+th, td{
+    border: 1px solid;
+    padding: 8px;
+    text-align: center;
+}
+
+.image_table{
+    width: 100px;
+    height: 100px
+}
+    
+.tittle-table{
+    background-color: #023535;
+    color: white;
+}
+
+.msg_center{
+    justify-content: center;
+    justify-items: center;
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    position: absolute;
+    top: 20%;
+    width: 100%;
 }

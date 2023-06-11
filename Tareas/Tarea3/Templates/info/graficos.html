@@ -1,0 +1,24 @@
+{% extends 'info/base.html' %}
+{% block title %}Graficos{% endblock%}
+
+{%block css%}
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+{%endblock%}
+{%block body%}
+<div>
+    <a class="back-btn" href="{{ url_for('index') }}"><span>&larr;</span></a>
+</div>
+<div id = "contenedor">
+    <div id="contenedorGrafico">
+        <div id="graficoDonacion"></div>
+    </div>
+    <div id="contenedorGrafico">
+        <div id="graficoPedido"></div>
+    </div>
+    
+</div>
+{%endblock%}
+{% block javascript %}
+<script src="{{ url_for('static', filename='JavaScripts/graficos.js') }}"></script>
+{% endblock%}

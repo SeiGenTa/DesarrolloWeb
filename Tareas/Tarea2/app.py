@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request,redirect, url_for, jsonify
-from utils.clases import Donation, createDonation, createOrder
+from utils.clases import createDonation, createOrder
 from utils.validations import donationValidate, validationOrder
-from database.db import getCommune,getRegion,saveDonate, savePhotos, saveOrder, getDonation
+from database.db import getCommune,getRegion,saveDonate, savePhotos, saveOrder, get5Donation,get5Pedidos,getDonationID,getPedidoId
 
 app = Flask(__name__)
 UPLOAD_FOLDER = 'static/uploads'
@@ -12,21 +12,23 @@ HOST = 'localHost'
 USER = 'cc5002'
 PASSWORD = 'programacionweb'
 
-def get_data():
-    return HOST, USER, PASSWORD
+userConnection = {"HOST":HOST, "USER":USER, "PASSWORD":PASSWORD}
 
 @app.route('/get_regions')
 def getRegions():
-    return getRegion(USER,PASSWORD,HOST)
+    return jsonify(getRegion(userConnection))
     
 @app.route('/get_communes', methods=['POST'])
 def getCommunes():
     var = request.get_json()
-    return getCommune(USER,PASSWORD,HOST, region = var['inf'])
-
-@app.route('/')
+    return jsonify(getCommune(userConnection, region = var['inf'])
+)
+@app.route('/',methods=["GET"])
 def index():
-    return render_template("/menus/initio.html");
+    data = request.args.get("msg")
+    if data:
+        return render_template("/menus/initio.html",msg = data);
+    return render_template("/menus/initio.html")
 
 @app.route('/test', methods=["GET","POST"])
 def testing():
@@ -50,9 +52,10 @@ def form_add_order():
             print(valid)
             return render_template("/forms/forms_order.html",data = {"error":valid[1]})
         myOrder = createOrder(request)
-        saveOrder(myOrder,USER,PASSWORD,HOST)
+        saveOrder(myOrder,userConnection)
         print(valid)
-        return redirect(url_for("index"))
+        msg = "El pedido a sido aceptada y recibida correctamente"
+        return redirect(url_for("index",msg=msg))
     elif request.method == "GET":
         return render_template("/forms/forms_order.html", data = {"error":''})
 
@@ -71,33 +74,37 @@ def form_add_don():
             return render_template("/forms/forms_donation.html",data = {"error":valid[1]})
         myDonation = createDonation(request)
         #* this function save the donation in DB and return the donation id 
-        idDonation = saveDonate(myDonation,USER,PASSWORD,HOST)
+        idDonation = saveDonate(myDonation,userConnection)
         print(idDonation)
-        savePhotos(idDonation,request,USER,PASSWORD,HOST,app.config['UPLOAD_FOLDER'])
-        return redirect(url_for("index"))
+        savePhotos(idDonation,request,userConnection,app.config['UPLOAD_FOLDER'])
+        msg = "La donacion a sido aceptada y recibida correctamente"
+        return redirect(url_for("index",msg=msg))
     if request.method == "GET":
         return render_template("/forms/forms_donation.html", data = {"error":''})
 
 @app.route('/ver_donaciones/<int:pag>', methods = ["GET"])
 def see_donations(pag):
     if request.method == "GET":
-        return render_template('/menus/seeDonation.html',pag = pag,data = getDonation(USER,PASSWORD,HOST,pag))
+        return render_template('/menus/seeDonation.html',pag = pag,data = get5Donation(userConnection,pag =pag))
     
-@app.route('/ver_pedidos', methods = ["GET"])
-def see_orders():
+@app.route('/ver_pedidos/<int:pag>', methods = ["GET"])
+def see_orders(pag):
     if request.method == "GET":
-        return render_template('/menus/seeOrder.html')
+        return render_template('/menus/seeOrder.html', pag= pag, data = get5Pedidos(userConnection,pag =pag))
     
 
-@app.route('/info_donaciones', methods=["GET"])
-def inf_donaciones():
+@app.route('/info_donaciones/<int:id>', methods=["GET"])
+def inf_donaciones(id):
     if request.method == "GET":
-        return render_template('/menus/info_donation.html', pag = 1)
+        donation = getDonationID(userConnection,id)
+        return render_template('/info/info_donation.html', id = id, data = donation)
 
-@app.route('/info_pedidos', methods=["GET"])
-def inf_pedidos():
+@app.route('/info_pedidos/<int:id>', methods=["GET"])
+def inf_pedidos(id):
     if request.method == "GET":
-        return render_template('/menus/info_order.html', pag = 1)
+        pedido = getPedidoId(userConnection,id)
+        print(pedido)
+        return render_template('/info/info_order.html', id = id,data = pedido)
 
 if __name__ == "__main__":
     app.run(port=5000,debug=True)

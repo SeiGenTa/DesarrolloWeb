@@ -1,0 +1,40 @@
+{%extends 'menus/base.html' %}
+{%block title %}Ver pedidos{%endblock%}
+{%block body%}
+    <div id = "table">
+        {% if data %}
+        <table id = "table-ord-dona">
+            <tr class="tittle-table">
+                <td>Comuna</td>
+                <td>tipo</td>
+                <td>descripcion</td>
+                <td>cantidad</td>
+                <td>nombre</td>
+            </tr>
+            {% for donation in data %}
+            <tr class="{{ loop.cycle('zebra-even', 'zebra-odd') }}" data-url="{{ url_for('inf_pedidos', id=donation.id_order) }}">
+                <td>{{donation.commune}}</td>
+                <td>{{donation.type}}</td>
+                <td>{{donation.description}}</td>
+                <td>{{donation.amount}}</td>
+                <td>{{donation.name}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <div id = "changePags">
+            {%if pag != 1%}
+            <a class="changePag" id="change-1 " href="{{ url_for('see_donations',pag = pag-1) }}"><span>&larr;</span></a>
+            {%endif%}
+            <p class="numPag" id="text-pag">pagina {{pag}}</p>
+            <a class="changePag" id="change+1" href="{{ url_for('see_donations',pag = pag+1) }}"><span>&rarr;</span></a>
+        </div>
+        {% else %}
+        <div class="msg_center"><p> No existen mas pedidos</p></div>
+            
+        {% endif %}
+
+    </div>
+{%endblock %}
+{%block javascript%}
+    <script src="{{ url_for('static', filename='JavaScripts/menus.js') }}"></script>
+{%endblock%}

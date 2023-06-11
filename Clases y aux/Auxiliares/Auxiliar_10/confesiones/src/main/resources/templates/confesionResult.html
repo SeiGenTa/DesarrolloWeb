@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Confesiones con Spring y Thymeleaf</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      media="all"
+      href="../../css/style.css"
+      th:href="@{/css/style.css}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      media="all"
+      href="../../css/confesiones.css"
+      th:href="@{/css/confesiones.css}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      media="all"
+      href="../../css/login.css"
+      th:href="@{/css/login.css}"
+    />
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="logo">
+        <img
+          id="logo-login"
+          th:src="@{/svg/confesiones.svg}"
+          alt="Logo de Confesiones 851"
+        />
+      </div>
+
+      <div
+        class="formulario"
+        id="login-form"
+      >
+        <h3>Tu confesión</h3>
+        <div class="grupo-input">
+          <p><span class="negrita">ID</span>: <span th:text="${confesion.id}"></span></p>
+        </div>
+        <div class="grupo-input">
+          <p><span class="negrita">Titulo</span>: <span th:text="${confesion.titulo}"></span></p>
+        </div>
+        <div class="grupo-input">
+          <p><span class="negrita">Cuerpo</span>: <span th:text="${confesion.cuerpo}"></span></p>
+        </div>
+        <div class="grupo-input">
+          <p><span class="negrita">Etiquetas</span>:</p>
+          <ul th:each="tag: ${confesion.tags}">
+            <li th:text="${tag}" />
+          </ul>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
