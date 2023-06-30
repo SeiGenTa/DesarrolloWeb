@@ -1,9 +1,10 @@
 #TitMap{
+    font-size: x-large;
     z-index: -1;
     height: 5%;
     width: 100%;
     position: absolute;
-    top: 20%;
+    top: 22%;
     left: 0;
     text-align: center;
 }
